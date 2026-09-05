@@ -15,6 +15,555 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Nastaliq+Urdu:wght@400;600;700&family=Playfair+Display:ital,wght@0,500;1,500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
+
+  <style>
+  /* =========================================================
+     INTRO FLOW
+     1) blurred envelope -> sharp
+     2) envelope opens automatically
+     3) Urdu cover card appears
+     4) cover click -> existing detailed invitation
+  ========================================================= */
+
+  .pre-envelope-stage{
+    position:fixed;
+    inset:0;
+    z-index:1300;
+    display:grid;
+    place-items:center;
+    min-height:100dvh;
+    overflow:hidden;
+    background:
+      radial-gradient(circle at 50% 42%, rgba(203,168,90,.13), transparent 28%),
+      radial-gradient(circle at 50% 48%, #211a0f 0%, #0d0b08 48%, #030302 100%);
+    opacity:1;
+    visibility:visible;
+    transition:opacity .9s ease, visibility .9s ease, transform .9s ease;
+  }
+
+  .pre-envelope-stage::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    opacity:.09;
+    background-image:
+      radial-gradient(circle at 20% 20%, #f0d48a 0 1px, transparent 1.5px),
+      radial-gradient(circle at 78% 32%, #cba85a 0 1px, transparent 1.5px),
+      radial-gradient(circle at 37% 82%, #f0d48a 0 1px, transparent 1.5px);
+    background-size:180px 180px,230px 230px,270px 270px;
+    animation:introDust 18s linear infinite;
+  }
+
+  @keyframes introDust{
+    to{background-position:180px 180px,-230px 230px,270px -270px}
+  }
+
+  .pre-envelope-stage.is-leaving{
+    opacity:0;
+    visibility:hidden;
+    transform:scale(1.045);
+    pointer-events:none;
+  }
+
+  .pre-envelope-wrap{
+    position:relative;
+    z-index:2;
+    width:min(700px,94vw);
+    text-align:center;
+    direction:ltr;
+  }
+
+  .pre-envelope-kicker{
+    margin:0 0 24px;
+    color:#aa9872;
+    font-family:"Playfair Display",serif;
+    font-size:10px;
+    letter-spacing:.52em;
+    text-transform:uppercase;
+    opacity:0;
+    transform:translateY(8px);
+    transition:opacity .8s ease, transform .8s ease;
+  }
+
+  .pre-envelope-stage.is-sharp .pre-envelope-kicker{
+    opacity:.9;
+    transform:none;
+  }
+
+  .pre-envelope{
+    position:relative;
+    width:min(570px,90vw);
+    aspect-ratio:1.58/1;
+    margin:auto;
+    perspective:1500px;
+    filter:blur(18px) brightness(.65);
+    transform:scale(.955);
+    opacity:.78;
+    transition:
+      filter 1.45s cubic-bezier(.2,.7,.2,1),
+      transform 1.45s cubic-bezier(.2,.7,.2,1),
+      opacity 1.2s ease;
+  }
+
+  .pre-envelope-stage.is-sharp .pre-envelope{
+    filter:blur(0) brightness(1);
+    transform:scale(1);
+    opacity:1;
+  }
+
+  .pre-envelope-back{
+    position:absolute;
+    inset:0;
+    z-index:1;
+    border:1px solid rgba(240,212,138,.33);
+    background:
+      radial-gradient(circle at 50% 10%, rgba(240,212,138,.09), transparent 32%),
+      linear-gradient(145deg,#302819,#17130d 66%);
+    box-shadow:0 35px 65px rgba(0,0,0,.58);
+  }
+
+  .pre-letter{
+    position:absolute;
+    left:7%;
+    top:6%;
+    width:86%;
+    height:86%;
+    z-index:2;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:28px;
+    text-align:center;
+    border:1px solid rgba(240,212,138,.52);
+    background:
+      radial-gradient(circle at 50% 35%,rgba(203,168,90,.10),transparent 43%),
+      #0d0c08;
+    box-shadow:0 24px 50px rgba(0,0,0,.44);
+    transform:translateY(68px) scale(.93);
+    transition:transform 1.35s cubic-bezier(.18,.86,.18,1);
+  }
+
+  .pre-letter-bismillah{
+    margin:0 0 12px;
+    color:#d7ba75;
+    font-family:"Amiri",serif;
+    font-size:clamp(.95rem,2.1vw,1.25rem);
+  }
+
+  .pre-letter-copy{
+    margin:14px 0 0;
+    color:#9e8c68;
+    font-family:"Noto Nastaliq Urdu",serif;
+  }
+
+  .pre-pocket-left,
+  .pre-pocket-right,
+  .pre-pocket-bottom{
+    position:absolute;
+    inset:0;
+    z-index:4;
+    pointer-events:none;
+  }
+
+  .pre-pocket-left{
+    clip-path:polygon(0 0,53% 57%,0 100%);
+    background:linear-gradient(135deg,#292116,#100d08);
+  }
+
+  .pre-pocket-right{
+    clip-path:polygon(100% 0,47% 57%,100% 100%);
+    background:linear-gradient(225deg,#302719,#110e09);
+  }
+
+  .pre-pocket-bottom{
+    clip-path:polygon(0 100%,50% 48%,100% 100%);
+    background:linear-gradient(to top,#17120c,#2d2518);
+  }
+
+  .pre-flap{
+    position:absolute;
+    left:0;
+    top:0;
+    width:100%;
+    height:59%;
+    z-index:7;
+    clip-path:polygon(0 0,100% 0,50% 100%);
+    background:linear-gradient(180deg,#382f1f,#1a150e);
+    transform-origin:center top;
+    transform:rotateX(0deg);
+    backface-visibility:hidden;
+    transition:transform 1.08s cubic-bezier(.65,.05,.25,1);
+  }
+
+  .pre-wax{
+    position:absolute;
+    left:50%;
+    top:49%;
+    z-index:10;
+    width:104px;
+    height:104px;
+    transform:translate(-50%,-50%);
+    display:grid;
+    place-items:center;
+    border-radius:50%;
+    border:2px solid #edcf70;
+    background:
+      radial-gradient(circle at 34% 27%,#ffe9a0 0%,#d9aa3d 31%,#936315 64%,#472c04 100%);
+    color:#201301;
+    box-shadow:
+      0 0 0 8px rgba(203,168,90,.12),
+      0 0 45px rgba(240,212,138,.25),
+      0 17px 35px rgba(0,0,0,.58),
+      inset 0 0 16px rgba(255,239,166,.30);
+    transition:transform .55s ease, opacity .45s ease, filter .45s ease;
+  }
+
+  .pre-wax::before{
+    content:"";
+    position:absolute;
+    inset:11px;
+    border-radius:50%;
+    border:1px solid rgba(64,39,4,.76);
+  }
+
+  .pre-wax-inner{
+    position:relative;
+    z-index:2;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    line-height:1.02;
+    font-family:"Playfair Display",serif;
+    text-transform:uppercase;
+    text-shadow:0 1px 0 rgba(255,239,166,.5);
+  }
+
+  .pre-wax-inner strong{
+    font-size:22px;
+    letter-spacing:.04em;
+  }
+
+  .pre-wax-inner small{
+    margin:4px 0 3px;
+    font-size:8px;
+    letter-spacing:.18em;
+    font-weight:700;
+  }
+
+  .pre-envelope-hint{
+    margin:29px 0 0;
+    color:#a59776;
+    font-family:"Noto Nastaliq Urdu",serif;
+    font-size:.88rem;
+    opacity:0;
+    transform:translateY(8px);
+    transition:opacity .8s ease, transform .8s ease;
+  }
+
+  .pre-envelope-stage.is-sharp .pre-envelope-hint{
+    opacity:.82;
+    transform:none;
+  }
+
+  .pre-envelope-stage.is-opening .pre-flap{
+    transform:rotateX(180deg);
+    z-index:0;
+  }
+
+  .pre-envelope-stage.is-opening .pre-wax{
+    opacity:0;
+    filter:blur(4px);
+    transform:translate(-50%,-50%) scale(.15) rotate(180deg);
+  }
+
+  .pre-envelope-stage.is-opening .pre-letter{
+    transform:translateY(-120px) scale(1);
+  }
+
+  .pre-envelope-stage.is-opening .pre-envelope-hint,
+  .pre-envelope-stage.is-opening .pre-envelope-kicker{
+    opacity:0;
+  }
+
+  .pre-particles{
+    position:absolute;
+    left:50%;
+    top:50%;
+    z-index:30;
+    width:1px;
+    height:1px;
+    pointer-events:none;
+  }
+
+  .pre-particle{
+    position:absolute;
+    width:4px;
+    height:4px;
+    border-radius:50%;
+    background:#f4d77d;
+    box-shadow:0 0 7px #ddb45a;
+    animation:introParticle 1.3s ease-out forwards;
+  }
+
+  @keyframes introParticle{
+    from{opacity:1;transform:translate(0,0) scale(1)}
+    to{opacity:0;transform:translate(var(--x),var(--y)) scale(.1)}
+  }
+
+
+  /* =========================================================
+     SECOND STAGE — URDU COVER CARD
+  ========================================================= */
+
+  .start-screen{
+    position:fixed !important;
+    inset:0 !important;
+    z-index:1200 !important;
+    display:grid !important;
+    place-items:center !important;
+    min-height:100dvh !important;
+    padding:16px !important;
+    overflow:auto !important;
+    background:
+      radial-gradient(circle at 50% 30%,rgba(203,168,90,.08),transparent 30%),
+      #080806 !important;
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+    transform:scale(1.045);
+    transition:
+      opacity 1s ease,
+      transform 1.15s cubic-bezier(.16,.8,.2,1),
+      visibility .8s;
+  }
+
+  .start-screen.cover-visible{
+    opacity:1 !important;
+    visibility:visible !important;
+    pointer-events:auto !important;
+    transform:scale(1) !important;
+  }
+
+  .start-screen.opened{
+    opacity:0 !important;
+    visibility:hidden !important;
+    pointer-events:none !important;
+  }
+
+  .cover-stage-card{
+    position:relative;
+    width:min(725px,94vw);
+    min-height:min(880px,94dvh);
+    padding:38px 34px 34px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    overflow:hidden;
+    border:1px solid rgba(203,168,90,.82);
+    outline:1px solid rgba(203,168,90,.24);
+    outline-offset:-12px;
+    background:
+      radial-gradient(circle at 50% 42%,rgba(203,168,90,.07),transparent 42%),
+      linear-gradient(145deg,rgba(255,255,255,.014),transparent 60%),
+      #0b0a07;
+    box-shadow:
+      0 35px 90px rgba(0,0,0,.68),
+      0 0 40px rgba(203,168,90,.04);
+  }
+
+  .cover-stage-card::before,
+  .cover-stage-card::after{
+    content:"";
+    position:absolute;
+    inset:11px;
+    pointer-events:none;
+    border:1px solid rgba(203,168,90,.18);
+  }
+
+  .cover-bismillah-new{
+    margin:0 0 8px;
+    color:#f0d48a;
+    font-family:"Amiri",serif;
+    font-size:clamp(1.2rem,2.5vw,1.7rem);
+  }
+
+  .cover-welcome-new{
+    margin:0;
+    color:#cba85a;
+    font-size:.86rem;
+  }
+
+  .cover-diamond-line{
+    width:min(145px,40%);
+    margin:10px auto 24px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    color:#cba85a;
+  }
+
+  .cover-diamond-line span{
+    flex:1;
+    height:1px;
+    background:linear-gradient(to right,transparent,#cba85a);
+  }
+
+  .cover-diamond-line span:last-child{
+    background:linear-gradient(to left,transparent,#cba85a);
+  }
+
+  .cover-diamond-line i{
+    font-size:8px;
+    font-style:normal;
+  }
+
+  .cover-couple-new{
+    margin:.05em 0 .12em;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    color:#f0d48a;
+    font-family:"Noto Nastaliq Urdu",serif;
+    font-size:clamp(3.8rem,10vw,6.6rem);
+    font-weight:400;
+    line-height:1.08;
+    text-shadow:0 0 34px rgba(203,168,90,.13);
+  }
+
+  .cover-couple-new i{
+    color:#cba85a;
+    font-family:"Amiri",serif;
+    font-size:.42em;
+    font-style:normal;
+    line-height:1;
+    margin:.05em 0;
+  }
+
+  .cover-guest-new{
+    width:min(360px,78%);
+    margin:14px auto 18px;
+    padding:8px 16px 11px;
+    border-block:1px solid rgba(203,168,90,.32);
+    color:#f7edcf;
+    font-family:"Noto Nastaliq Urdu",serif;
+    font-size:1rem;
+  }
+
+  .cover-poetry-new{
+    margin:8px auto 18px;
+    max-width:530px;
+    color:#e5d8b7;
+    font-family:"Noto Nastaliq Urdu",serif;
+    font-size:clamp(1rem,2.4vw,1.35rem);
+  }
+
+  .cover-date-new{
+    margin:0 0 8px;
+    color:#a59673;
+    font-family:"Amiri",serif;
+  }
+
+  .cover-invite-new{
+    margin:8px 0 14px;
+    color:#f0d48a;
+    font-family:"Noto Nastaliq Urdu",serif;
+    font-size:clamp(1.5rem,3.5vw,2.15rem);
+    font-weight:700;
+  }
+
+  .cover-seal-line-new{
+    width:min(290px,70%);
+    margin:6px auto 12px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+
+  .cover-seal-line-new span{
+    flex:1;
+    height:1px;
+    background:linear-gradient(to right,transparent,rgba(203,168,90,.75));
+  }
+
+  .cover-seal-line-new span:last-child{
+    background:linear-gradient(to left,transparent,rgba(203,168,90,.75));
+  }
+
+  .cover-seal-new{
+    width:72px;
+    height:72px;
+    flex:0 0 72px;
+    display:grid;
+    place-items:center;
+    border-radius:50%;
+    border:2px solid #efd275;
+    color:#211402;
+    background:
+      radial-gradient(circle at 35% 28%,#ffe8a0 0%,#d8aa3f 32%,#9a6717 63%,#4d3106 100%);
+    box-shadow:
+      0 0 0 5px rgba(203,168,90,.12),
+      0 0 30px rgba(240,212,138,.16),
+      0 12px 28px rgba(0,0,0,.55),
+      inset 0 0 15px rgba(255,237,157,.3);
+  }
+
+  .cover-open-new{
+    margin-top:2px;
+    min-width:270px;
+    padding:12px 26px;
+    border:1px solid #e6c66e;
+    background:
+      linear-gradient(110deg,#8d641c 0%,#c99b3c 20%,#f2d77c 52%,#c99b3c 82%,#8d641c 100%);
+    color:#090806;
+    font-family:"Noto Nastaliq Urdu",serif;
+    font-size:1rem;
+    cursor:pointer;
+    box-shadow:0 10px 25px rgba(0,0,0,.34);
+    transition:transform .25s ease, filter .25s ease;
+  }
+
+  .cover-open-new:hover{
+    transform:translateY(-2px);
+    filter:brightness(1.06);
+  }
+
+  .cover-signature-new{
+    margin:18px 0 0;
+    color:#8f846d;
+    font-family:"Noto Nastaliq Urdu",serif;
+    font-size:.82rem;
+  }
+
+  @media(max-width:600px){
+    .pre-envelope-kicker{font-size:8px;letter-spacing:.34em}
+    .pre-wax{width:88px;height:88px}
+    .pre-wax-inner strong{font-size:18px}
+    .cover-stage-card{
+      min-height:auto;
+      padding:32px 18px 28px;
+    }
+    .cover-couple-new{
+      font-size:clamp(3rem,17vw,5rem);
+    }
+    .cover-open-new{
+      min-width:min(270px,88%);
+    }
+  }
+
+  @media(prefers-reduced-motion:reduce){
+    .pre-envelope-stage *,
+    .start-screen *{
+      animation:none !important;
+    }
+  }
+  </style>
+
+
 </head>
 
 <body class="locked">
@@ -22,65 +571,100 @@
   <div class="grain" aria-hidden="true"></div>
   <div class="petal-layer" id="petalLayer" aria-hidden="true"></div>
 
-  <!-- =========================
-       CINEMATIC START SCREEN
-  ========================== -->
-  <section class="envelope start-screen" id="envelope" aria-label="دعوت نامہ کھولیں">
-    <div class="start-bg" aria-hidden="true"></div>
-    <div class="start-vignette" aria-hidden="true"></div>
-    <div class="start-confetti" aria-hidden="true">
-      <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-    </div>
+  <!-- =====================================================
+       STEP 1 — BLUR -> CLEAR -> AUTO OPEN ENVELOPE
+  ====================================================== -->
+  <section class="pre-envelope-stage" id="preEnvelopeStage" aria-label="دعوت نامہ">
+    <div class="pre-envelope-wrap">
+      <p class="pre-envelope-kicker">A SPECIAL WEDDING INVITATION</p>
 
-    <div class="start-shell">
-      <div class="start-left">
-        <p class="start-overline">WEDDING INVITATION · <span id="coverBrideTop">جبران</span> WITH <span id="coverGroomTop">علی</span></p>
+      <div class="pre-envelope" id="preEnvelope">
+        <div class="pre-envelope-back"></div>
 
-        <h1 class="start-names" dir="rtl">
-          <span id="coverBride">جبران</span>
-          <em>with</em>
-          <span id="coverGroom">علی</span>
-        </h1>
-
-        <div class="start-rule"></div>
-        <p class="start-tagline">Two families. One promise. One beautiful beginning.</p>
-      </div>
-
-      <aside class="reserved-card">
-        <p class="reserved-kicker">RESERVED FOR</p>
-        <h2 id="coverGuest">معزز مہمان و اہلِ خانہ</h2>
-        <p class="reserved-copy">We would be honoured to celebrate this occasion with you.</p>
-
-        <div class="reserved-divider"></div>
-
-        <div class="reserved-details">
-          <div>
-            <span>WHEN</span>
-            <strong id="startDate">بروز ہفتہ، ۱۲ دسمبر ۲۰۲۶</strong>
-            <small id="startTime">شام ۷:۰۰ بجے</small>
-          </div>
-          <div>
-            <span>WHERE</span>
-            <strong id="startVenue">باراتی ہال، کراچی</strong>
-          </div>
+        <div class="pre-letter">
+          <p class="pre-letter-bismillah">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</p>
+          <p class="pre-letter-copy">دعوتِ محبت</p>
         </div>
 
-        <button class="start-open" id="openInvite" type="button">
-          <span>دعوت نامہ کھولیے</span>
-          <b>↗</b>
-        </button>
-      </aside>
+        <div class="pre-pocket-left"></div>
+        <div class="pre-pocket-right"></div>
+        <div class="pre-pocket-bottom"></div>
+        <div class="pre-flap"></div>
 
-      <div class="start-countdown-wrap">
-        <p>Countdown</p>
-        <div class="start-countdown" id="startCountdown" aria-label="تقریب تک باقی وقت"></div>
+        <div class="pre-wax" aria-hidden="true">
+          <div class="pre-wax-inner">
+            <strong>I</strong>
+            <small>WEDS</small>
+            <strong>K</strong>
+          </div>
+        </div>
       </div>
+
+      <p class="pre-envelope-hint">ایک خاص دعوت آپ کے لیے</p>
     </div>
 
-    <div class="spark-burst" id="sparkBurst" aria-hidden="true"></div>
+    <div class="pre-particles" id="preParticles" aria-hidden="true"></div>
   </section>
 
-  <!-- Music control remains functional, only the explanatory text was removed -->
+  <!-- =====================================================
+       STEP 2 — URDU COVER CARD
+       Click this card/button to open the detailed invitation.
+  ====================================================== -->
+  <section class="envelope start-screen" id="envelope" aria-label="دعوت نامہ کھولیں">
+    <div class="cover-stage-card">
+
+      <p class="cover-bismillah-new">
+        بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ
+      </p>
+
+      <p class="cover-welcome-new">خوش آمدید</p>
+
+      <div class="cover-diamond-line">
+        <span></span><i>◆</i><span></span>
+      </div>
+
+      <h1 class="cover-couple-new">
+        <span id="coverBride">جبران</span>
+        <i>و</i>
+        <span id="coverGroom">علی</span>
+      </h1>
+
+      <div class="cover-guest-new">
+        بخدمت
+        <strong id="coverGuest">معزز مہمان و اہلِ خانہ</strong>
+      </div>
+
+      <p class="cover-poetry-new">
+        بہاروں کی رونق، خوشیوں کی شام کے ساتھی
+      </p>
+
+      <p class="cover-date-new" id="coverDate">
+        دسمبر ۲۰۲۶
+      </p>
+
+      <p class="cover-invite-new">
+        دعوتِ محبت قبول کیجیے
+      </p>
+
+      <div class="cover-seal-line-new">
+        <span></span>
+        <div class="cover-seal-new">◆</div>
+        <span></span>
+      </div>
+
+      <button class="cover-open-new" id="openInvite" type="button">
+        دعوت نامہ ملاحظہ کیجیے
+      </button>
+
+      <p class="cover-signature-new">
+        خلوص، روایت اور اپنائیت کے ساتھ
+      </p>
+
+      <div class="spark-burst" id="sparkBurst" aria-hidden="true"></div>
+    </div>
+  </section>
+
+<!-- Music control remains functional, only the explanatory text was removed -->
   <button
     class="music-toggle"
     id="musicToggle"
@@ -516,5 +1100,70 @@
 
   <script src="client-data.js"></script>
 <script src="app.js"></script>
+
+
+<script>
+/* =========================================================
+   INTRO CONTROLLER
+   blur -> clear -> auto-open -> Urdu cover
+   Existing app.js controls Urdu cover click -> main details.
+========================================================= */
+(function(){
+  const stage = document.getElementById("preEnvelopeStage");
+  const cover = document.getElementById("envelope");
+  const particles = document.getElementById("preParticles");
+
+  if(!stage || !cover) return;
+
+  function burst(){
+    if(!particles) return;
+    particles.innerHTML = "";
+
+    for(let i = 0; i < 36; i++){
+      const p = document.createElement("span");
+      p.className = "pre-particle";
+
+      const angle = Math.random() * Math.PI * 2;
+      const distance = 80 + Math.random() * 210;
+
+      p.style.setProperty("--x", `${Math.cos(angle) * distance}px`);
+      p.style.setProperty("--y", `${Math.sin(angle) * distance}px`);
+      p.style.animationDelay = `${Math.random() * .12}s`;
+
+      particles.appendChild(p);
+    }
+
+    setTimeout(() => particles.innerHTML = "", 1500);
+  }
+
+  /* 1) blurred envelope becomes clear */
+  requestAnimationFrame(() => {
+    setTimeout(() => {
+      stage.classList.add("is-sharp");
+    }, 350);
+  });
+
+  /* 2) automatically open after user has seen the clear envelope */
+  setTimeout(() => {
+    stage.classList.add("is-opening");
+    burst();
+  }, 2400);
+
+  /* 3) show the Urdu cover card */
+  setTimeout(() => {
+    cover.classList.add("cover-visible");
+  }, 3650);
+
+  /* 4) fade envelope away */
+  setTimeout(() => {
+    stage.classList.add("is-leaving");
+  }, 3850);
+
+  setTimeout(() => {
+    stage.style.display = "none";
+  }, 4800);
+})();
+</script>
+
 </body>
 </html>
