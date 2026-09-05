@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="ur" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#090806" />
+  <meta name="description" content="شادی کی پُرخلوص دعوت — بارات و ولیمہ" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="دعوتِ شادی" />
+  <meta property="og:description" content="ہماری خوشیوں میں شریک ہو کر اس محفل کو یادگار بنائیے۔" />
+  <title>دعوتِ شادی</title>
+
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Nastaliq+Urdu:wght@400;600;700&family=Playfair+Display:ital,wght@0,500;1,500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body class="locked">
+
+  <div class="grain" aria-hidden="true"></div>
+  <div class="petal-layer" id="petalLayer" aria-hidden="true"></div>
+
+  <!-- =========================
+       CINEMATIC START SCREEN
+  ========================== -->
+  <section class="envelope start-screen" id="envelope" aria-label="دعوت نامہ کھولیں">
+    <div class="start-bg" aria-hidden="true"></div>
+    <div class="start-vignette" aria-hidden="true"></div>
+    <div class="start-confetti" aria-hidden="true">
+      <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+    </div>
+
+    <div class="start-shell">
+      <div class="start-left">
+        <p class="start-overline">WEDDING INVITATION · <span id="coverBrideTop">جبران</span> WITH <span id="coverGroomTop">علی</span></p>
+
+        <h1 class="start-names" dir="rtl">
+          <span id="coverBride">جبران</span>
+          <em>with</em>
+          <span id="coverGroom">علی</span>
+        </h1>
+
+        <div class="start-rule"></div>
+        <p class="start-tagline">Two families. One promise. One beautiful beginning.</p>
+      </div>
+
+      <aside class="reserved-card">
+        <p class="reserved-kicker">RESERVED FOR</p>
+        <h2 id="coverGuest">معزز مہمان و اہلِ خانہ</h2>
+        <p class="reserved-copy">We would be honoured to celebrate this occasion with you.</p>
+
+        <div class="reserved-divider"></div>
+
+        <div class="reserved-details">
+          <div>
+            <span>WHEN</span>
+            <strong id="startDate">بروز ہفتہ، ۱۲ دسمبر ۲۰۲۶</strong>
+            <small id="startTime">شام ۷:۰۰ بجے</small>
+          </div>
+          <div>
+            <span>WHERE</span>
+            <strong id="startVenue">باراتی ہال، کراچی</strong>
+          </div>
+        </div>
+
+        <button class="start-open" id="openInvite" type="button">
+          <span>دعوت نامہ کھولیے</span>
+          <b>↗</b>
+        </button>
+      </aside>
+
+      <div class="start-countdown-wrap">
+        <p>Countdown</p>
+        <div class="start-countdown" id="startCountdown" aria-label="تقریب تک باقی وقت"></div>
+      </div>
+    </div>
+
+    <div class="spark-burst" id="sparkBurst" aria-hidden="true"></div>
+  </section>
+
+  <!-- Music control remains functional, only the explanatory text was removed -->
+  <button
+    class="music-toggle"
+    id="musicToggle"
+    aria-label="موسیقی بند کریں"
+    title="موسیقی"
+    type="button"
+  >♫</button>
+
+
+  <main id="mainContent">
+
+    <!-- =========================
+         HERO
+    ========================== -->
+    <section class="hero section">
+      <div class="frame">
+
+        <p class="eyebrow">بصد مسرت و احترام</p>
+
+        <p class="quran">
+          وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا
+        </p>
+
+        <p class="translation">
+          اور اُس کی نشانیوں میں سے ہے کہ اُس نے تمہارے لیے تم ہی میں سے جوڑے بنائے تاکہ تم اُن سے سکون پاؤ۔
+        </p>
+
+        <p class="hosts">
+          محترم
+          <span id="invitedGuest">معزز مہمان</span>
+          آپ کو اپنے عزیزان کے ہمراہ تقریبِ شادی میں شرکت کی پُرخلوص دعوت دی جاتی ہے۔
+        </p>
+
+        <h2 class="couple">
+          <span id="brideName">عائشہ</span>
+          <i>و</i>
+          <span id="groomName">حمزہ</span>
+        </h2>
+
+        <p class="addressed">خصوصی دعوت برائے</p>
+
+        <div class="guest-name" id="guestName">
+          معزز مہمان و اہلِ خانہ
+        </div>
+
+        <p>آپ کی شرکت ہماری خوشیوں کو دوبالا کرے گی</p>
+
+        <div
+          class="countdown"
+          id="countdown"
+          aria-label="تقریب تک باقی وقت"
+        ></div>
+
+      </div>
+    </section>
+
+
+    <!-- =========================
+         QUOTE
+    ========================== -->
+    <section class="quote section reveal">
+      <p class="eyebrow">دعا و محبت کے ساتھ</p>
+      <blockquote>
+        ”دو دل، دو خاندان، اور ایک خوبصورت سفر کا آغاز“
+      </blockquote>
+    </section>
+
+    <!-- =========================
+         WEDDING MOMENTS
+    ========================== -->
+    <section class="moments section reveal" aria-label="شادی کی تصاویر">
+      <p class="eyebrow">یادگار لمحات</p>
+      <h2>محبت، روایت اور خوشیوں کے رنگ</h2>
+      <div class="moments-grid">
+        <figure class="moment-card moment-tall">
+          <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1100&q=82" alt="Wedding rings and celebration details" loading="lazy" />
+          <figcaption>ایک نئے سفر کا آغاز</figcaption>
+        </figure>
+        <figure class="moment-card">
+          <img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=1100&q=82" alt="Elegant wedding table setting" loading="lazy" />
+          <figcaption>روایت کی خوبصورتی</figcaption>
+        </figure>
+        <figure class="moment-card">
+          <img src="https://images.unsplash.com/photo-1507504031003-b417219a0fde?auto=format&fit=crop&w=1100&q=82" alt="Wedding celebration decor" loading="lazy" />
+          <figcaption>خوشیوں کی شام</figcaption>
+        </figure>
+      </div>
+      <p class="moments-note">ان تصاویر کو اپنی اصل شادی کی تصاویر سے بعد میں آسانی سے تبدیل کیا جا سکتا ہے۔</p>
+    </section>
+
+
+    <!-- =========================
+         EVENTS
+    ========================== -->
+    <section class="events section reveal" id="events">
+
+      <p class="eyebrow">تقریبات</p>
+      <h2>آپ کی آمد کے منتظر</h2>
+
+      <article class="event-card" id="baratCard">
+
+        <span class="event-number">۰۱</span>
+
+        <h3>تقریبِ بارات</h3>
+
+        <p class="event-date" id="baratDate">
+          بروز ہفتہ، ۱۲ دسمبر ۲۰۲۶
+        </p>
+
+        <dl>
+          <div>
+            <dt>وقت</dt>
+            <dd id="baratTime">شام ۷:۰۰ بجے</dd>
+          </div>
+
+          <div>
+            <dt>مقام</dt>
+            <dd id="baratVenue">باراتی ہال، کراچی</dd>
+          </div>
+        </dl>
+
+        <div class="actions">
+          <a id="baratMap" target="_blank" rel="noopener">گوگل نقشہ</a>
+          <a id="baratCalendar" target="_blank" rel="noopener">کیلنڈر میں شامل کریں</a>
+        </div>
+
+      </article>
+
+
+      <article class="event-card" id="walimaCard">
+
+        <span class="event-number">۰۲</span>
+
+        <h3>دعوتِ ولیمہ</h3>
+
+        <p class="event-date" id="walimaDate">
+          بروز اتوار، ۱۳ دسمبر ۲۰۲۶
+        </p>
+
+        <dl>
+          <div>
+            <dt>وقت</dt>
+            <dd id="walimaTime">رات ۸:۰۰ بجے</dd>
+          </div>
+
+          <div>
+            <dt>مقام</dt>
+            <dd id="walimaVenue">پرل بینکوئٹ، کراچی</dd>
+          </div>
+        </dl>
+
+        <div class="actions">
+          <a id="walimaMap" target="_blank" rel="noopener">گوگل نقشہ</a>
+          <a id="walimaCalendar" target="_blank" rel="noopener">کیلنڈر میں شامل کریں</a>
+        </div>
+
+      </article>
+
+    </section>
+
+
+    <!-- =========================
+         RSVP
+    ========================== -->
+    <section class="rsvp section reveal" id="rsvp">
+
+      <p class="eyebrow">تصدیقِ شرکت</p>
+
+      <h2 id="rsvpHeading">بارات میں شرکت</h2>
+
+      <p id="rsvpIntro">
+        براہِ کرم افراد کی تعداد منتخب کرکے واٹس ایپ پر اپنی شرکت کی تصدیق فرمائیں۔
+      </p>
+
+
+      <!-- Single-event RSVP -->
+      <div class="simple-rsvp hidden" id="simpleRsvp">
+
+        <h3>اپنی شرکت کی تصدیق کیجیے</h3>
+
+        <div class="rsvp-actions">
+
+          <a
+            href="#"
+            class="whatsapp accept"
+            id="simpleAcceptBtn"
+            target="_blank"
+            rel="noopener"
+          >
+            ✓ شرکت کی تصدیق کریں
+          </a>
+
+          <a
+            href="#"
+            class="whatsapp regret"
+            id="simpleRegretBtn"
+            target="_blank"
+            rel="noopener"
+          >
+            معذرت
+          </a>
+
+        </div>
+      </div>
+
+
+      <!-- Barat + Walima counter -->
+      <div class="attendance" id="baratAttendance">
+
+        <div class="counter-row">
+          <span>خواتین</span>
+
+          <div class="counter">
+            <button type="button" data-action="minus" data-type="ladies">−</button>
+            <output id="ladiesCount">0</output>
+            <button type="button" data-action="plus" data-type="ladies">+</button>
+          </div>
+        </div>
+
+        <div class="counter-row">
+          <span>حضرات</span>
+
+          <div class="counter">
+            <button type="button" data-action="minus" data-type="gents">−</button>
+            <output id="gentsCount">0</output>
+            <button type="button" data-action="plus" data-type="gents">+</button>
+          </div>
+        </div>
+
+        <div class="counter-row">
+          <span>بچے</span>
+
+          <div class="counter">
+            <button type="button" data-action="minus" data-type="children">−</button>
+            <output id="childrenCount">0</output>
+            <button type="button" data-action="plus" data-type="children">+</button>
+          </div>
+        </div>
+
+        <p class="limit" id="guestLimit">
+          زیادہ سے زیادہ ۴ افراد
+        </p>
+
+      </div>
+
+
+      <div id="fullRsvpActions">
+        <div class="rsvp-actions">
+
+          <a
+            class="whatsapp accept"
+            id="acceptBtn"
+            target="_blank"
+            rel="noopener"
+          >
+            واٹس ایپ پر شرکت کی تصدیق
+          </a>
+
+          <a
+            class="whatsapp regret"
+            id="regretBtn"
+            target="_blank"
+            rel="noopener"
+          >
+            معذرت کا پیغام بھیجیں
+          </a>
+
+        </div>
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         CLOSING
+    ========================== -->
+    <section class="closing-section section">
+
+      <div class="closing-content">
+
+        <p class="eyebrow">تشکر و دعاؤں کے ساتھ</p>
+
+        <h2>
+          آپ کی شرکت ہماری خوشیوں کو
+          <span>یادگار بنائے گی</span>
+        </h2>
+
+        <p class="closing-message">
+          ہماری خوشیوں میں شریک ہونے اور اپنی دعاؤں میں یاد رکھنے
+          کے لیے ہم دل کی گہرائیوں سے آپ کے شکر گزار ہیں۔
+        </p>
+
+        <div class="closing-card">
+
+          <p class="closing-label">دعاؤں کے طلبگار</p>
+
+          <p class="closing-relation">والدِ محترم</p>
+
+          <div class="closing-couple">
+            <span id="closingFather">چوہدری علی</span>
+          </div>
+
+          <p class="together-with">بمع اہلِ خانہ</p>
+
+          <p class="closing-host" id="closingHost">
+            جناب و محترمہ __________
+          </p>
+
+        </div>
+
+        <div class="closing-ornament">
+          <span></span>
+          <b>◆</b>
+          <i>◇</i>
+          <b>◆</b>
+          <span></span>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         FAMILY ROSTER
+    ========================== -->
+    <section class="family-roster reveal">
+
+      <p class="family-roster-kicker">
+        دعاؤں کے طلبگار
+      </p>
+
+      <div class="family-head">
+
+        <span class="family-head-label">
+          والدِ محترم
+        </span>
+
+        <h2 class="family-father-name">
+          جناب __________ صاحب
+        </h2>
+
+      </div>
+
+      <div class="family-roster-divider">
+        <span></span>
+        <i>◆</i>
+        <span></span>
+      </div>
+
+
+      <div class="family-roster-columns">
+
+        <div class="family-roster-column">
+
+          <h3>بزرگانِ خاندان</h3>
+
+          <div class="family-names" id="eldersList"></div>
+
+        </div>
+
+
+        <div class="family-center-line"></div>
+
+
+        <div class="family-roster-column">
+
+          <h3>عزیزانِ خاندان</h3>
+
+          <div class="family-names" id="cousinsList"></div>
+
+        </div>
+
+      </div>
+
+
+      <div class="family-roster-footer">
+        <span>✦</span>
+        <p>آپ کی آمد ہماری خوشیوں کو دوبالا کرے گی</p>
+        <span>✦</span>
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+    <footer class="section reveal">
+
+      <p class="eyebrow">دعا کے طلب گار</p>
+
+      <h2>
+        <span id="footerBride">عائشہ</span>
+        <i>و</i>
+        <span id="footerGroom">حمزہ</span>
+      </h2>
+
+      <p>ہماری خوشیوں میں شریک ہونے کا شکریہ</p>
+
+      <div class="ornament">◆</div>
+
+      <div class="creator-credit">
+
+        <span class="credit-heading">
+          تخلیق و پیشکش
+        </span>
+
+        <a
+          class="brand-link"
+          href="https://wa.me/923116170174"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Visit Bin Shakoor"
+        >
+          <strong>BIN SHAKOOR</strong>
+          <span>GROUP OF COMPANIES</span>
+        </a>
+
+        <p class="credit-love">
+          محبت و خلوص کے ساتھ
+        </p>
+
+        <p class="credit-description">
+          بن شکور گروپ آف کمپنیز کی جانب سے آپ کے لیے خصوصی طور پر پیش خدمت۔
+        </p>
+
+      </div>
+
+    </footer>
+
+  </main>
+
+  <script src="client-data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
