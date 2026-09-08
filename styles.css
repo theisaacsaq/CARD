@@ -2693,3 +2693,128 @@
     font-size:clamp(2.2rem,10vw,3.8rem) !important;
   }
 }
+
+/* =========================================================
+   MOBILE / SHORT-SCREEN SAFETY FIX
+   Keeps the intro envelope and Urdu cover fully usable
+   on narrow phones, short phones and landscape screens.
+========================================================= */
+
+html, body{
+  width:100%;
+  min-width:0;
+}
+
+.pre-envelope-stage{
+  width:100%;
+  min-height:100svh;
+  min-height:100dvh;
+}
+
+.pre-envelope-wrap{
+  width:min(700px,94vw);
+  max-width:100%;
+  box-sizing:border-box;
+}
+
+.pre-envelope{
+  max-width:100%;
+  max-height:calc(100svh - 150px);
+}
+
+#envelope.start-screen{
+  box-sizing:border-box;
+  width:100%;
+  max-width:100%;
+  min-width:0;
+}
+
+#envelope .cover-stage-card{
+  box-sizing:border-box;
+  min-width:0;
+  max-width:100%;
+}
+
+#envelope .cover-stage-card > *{
+  max-width:100%;
+}
+
+@media (max-width:600px){
+  .pre-envelope-stage{
+    padding:
+      max(8px, env(safe-area-inset-top))
+      max(10px, env(safe-area-inset-right))
+      max(8px, env(safe-area-inset-bottom))
+      max(10px, env(safe-area-inset-left));
+    box-sizing:border-box;
+  }
+
+  .pre-envelope-wrap{
+    width:100%;
+    max-width:430px;
+  }
+
+  .pre-envelope{
+    width:min(92vw, calc((100svh - 128px) * 1.58));
+    width:min(92vw, calc((100dvh - 128px) * 1.58));
+    max-width:100%;
+    max-height:calc(100dvh - 128px);
+    aspect-ratio:1.58 / 1;
+  }
+
+  .pre-letter{
+    overflow:hidden;
+  }
+
+  #envelope.start-screen.cover-visible{
+    padding:
+      max(8px, env(safe-area-inset-top))
+      max(10px, env(safe-area-inset-right))
+      max(8px, env(safe-area-inset-bottom))
+      max(10px, env(safe-area-inset-left));
+    overflow:hidden !important;
+  }
+
+  #envelope.start-screen.cover-visible .cover-stage-card{
+    width:100%;
+    max-width:430px;
+    max-height:calc(100dvh - 16px);
+    min-height:0;
+    overflow-x:hidden;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior:contain;
+  }
+
+  #envelope .cover-open-new{
+    touch-action:manipulation;
+    -webkit-tap-highlight-color:transparent;
+  }
+}
+
+@media (max-width:600px) and (max-height:700px){
+  .pre-envelope{
+    width:min(88vw, calc((100svh - 98px) * 1.58));
+    width:min(88vw, calc((100dvh - 98px) * 1.58));
+    max-height:calc(100dvh - 98px);
+  }
+
+  .pre-envelope-kicker{
+    margin-bottom:8px;
+  }
+
+  .pre-envelope-hint{
+    margin-top:8px;
+  }
+
+  #envelope.start-screen.cover-visible .cover-stage-card{
+    padding-top:12px !important;
+    padding-bottom:12px !important;
+  }
+}
+
+@media (max-width:380px){
+  .pre-envelope{
+    width:min(86vw, calc((100dvh - 90px) * 1.58));
+  }
+}
