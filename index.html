@@ -327,6 +327,34 @@
     flex-basis:48px !important;
   }
 }
+
+/* FINAL MOBILE INVITATION VISIBILITY FIX */
+@media (max-width:600px){
+  html, body{
+    min-width:0 !important;
+    overflow-x:hidden !important;
+  }
+
+  body:not(.locked){
+    overflow-y:auto !important;
+  }
+
+  #mainContent{
+    display:block !important;
+    position:relative !important;
+    z-index:1 !important;
+    width:100% !important;
+    min-width:0 !important;
+    visibility:visible !important;
+  }
+
+  #envelope.start-screen.opened{
+    display:none !important;
+    visibility:hidden !important;
+    pointer-events:none !important;
+  }
+}
+
 </style>
 
 
@@ -1076,7 +1104,7 @@
       </div>
 
       <button class="cover-open-new" id="openInvite" type="button"
-        onclick="(function(){var e=document.getElementById('envelope');var m=document.getElementById('mainContent');if(e)e.classList.add('opened');document.body.classList.remove('locked');if(m){m.style.visibility='visible';m.style.opacity='1';m.scrollIntoView({behavior:'smooth',block:'start'});}})()">
+        onclick="openWeddingInvitation(event)">
         دعوت نامہ ملاحظہ کیجیے
       </button>
 
@@ -1534,6 +1562,44 @@ window.addEventListener("error", function(event){
     event.preventDefault();
   }
 });
+
+/* =========================================================
+   MOBILE-SAFE INVITATION OPEN
+   Opens the detailed invitation even if app.js is delayed/missing.
+========================================================= */
+function openWeddingInvitation(event){
+  if(event){
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
+  const envelope = document.getElementById("envelope");
+  const mainContent = document.getElementById("mainContent");
+
+  document.body.classList.remove("locked");
+  document.documentElement.style.overflow = "auto";
+  document.body.style.overflow = "auto";
+
+  if(envelope){
+    envelope.classList.add("opened");
+  }
+
+  if(mainContent){
+    mainContent.style.display = "block";
+    mainContent.style.visibility = "visible";
+    mainContent.style.opacity = "1";
+    mainContent.style.position = "relative";
+    mainContent.style.zIndex = "1";
+
+    /* Wait until the fixed cover is removed, then move to the invitation. */
+    setTimeout(function(){
+      mainContent.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }, 80);
+  }
+}
 
 /* =========================================================
    INTRO CONTROLLER
