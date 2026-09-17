@@ -22,7 +22,7 @@
 @media (max-width: 600px){
   html, body{width:100%; min-width:0; overflow-x:hidden;}
   body.locked{overflow:hidden;}
-  #preEnvelopeStage{display:grid !important; visibility:visible !important; pointer-events:auto !important;}
+  #preEnvelopeStage{display:grid !important; visibility:visible !important; pointer-events:none !important;}
   #envelope.start-screen{
     display:flex !important;
     position:fixed !important; inset:0 !important; z-index:1200 !important;
@@ -267,6 +267,7 @@
       radial-gradient(circle at 50% 48%, #211a0f 0%, #0d0b08 48%, #030302 100%);
     opacity:1;
     visibility:visible;
+    pointer-events:none;
     transition:opacity .9s ease, visibility .9s ease, transform .9s ease;
   }
 
@@ -1438,74 +1439,6 @@
 
   <script src="client-data.js"></script>
 <script src="app.js"></script>
-<script>
-(function(){
-  const btn = document.getElementById("openInvite");
-  const cover = document.getElementById("envelope");
-  const card = cover ? cover.querySelector(".cover-stage-card") : null;
-  const main = document.getElementById("mainContent");
-  if(!btn || !cover || !card) return;
-
-  function openCard(e){
-    if(e){
-      e.preventDefault();
-      e.stopPropagation();
-      if(e.stopImmediatePropagation) e.stopImmediatePropagation();
-    }
-    if(btn.dataset.opened === "1") return;
-    btn.dataset.opened = "1";
-    btn.disabled = true;
-    cover.classList.add("card-opening");
-
-    try{
-      card.animate([
-        {opacity:1, transform:"perspective(1400px) scale(1) rotateX(0deg) translateY(0)", filter:"blur(0px)"},
-        {opacity:1, transform:"perspective(1400px) scale(1.025) rotateX(0deg) translateY(-3px)", filter:"blur(0px)", offset:.32},
-        {opacity:1, transform:"perspective(1400px) scale(1.055) rotateX(-3deg) translateY(-7px)", filter:"blur(0px)", offset:.58},
-        {opacity:0, transform:"perspective(1400px) scale(1.14) rotateX(-10deg) translateY(-28px)", filter:"blur(4px)"}
-      ], {duration:1250, easing:"cubic-bezier(.2,.8,.18,1)", fill:"forwards"});
-
-      card.querySelectorAll(
-        ".cover-bismillah-new,.cover-welcome-new,.cover-diamond-line,"+
-        ".cover-couple-new,.cover-guest-new,.cover-poetry-new,.cover-date-new,"+
-        ".cover-invite-new,.cover-seal-line-new,.cover-open-new,.cover-signature-new"
-      ).forEach((el,i)=>{
-        el.animate([
-          {opacity:1,transform:"translateY(0) scale(1)"},
-          {opacity:1,transform:"translateY(-3px) scale(1.01)",offset:.35},
-          {opacity:0,transform:"translateY(-24px) scale(.94)"}
-        ],{duration:900,delay:Math.min(i*12,120),easing:"cubic-bezier(.2,.8,.18,1)",fill:"forwards"});
-      });
-    }catch(err){
-      /* CSS .card-opening animation remains as fallback. */
-    }
-
-    if(typeof createRoyalSparks === "function"){
-      try{ createRoyalSparks(); }catch(err){}
-    }
-
-    setTimeout(function(){
-      cover.classList.add("opened");
-      document.body.classList.remove("locked");
-      if(main){
-        main.style.visibility="visible";
-        main.style.opacity="1";
-        main.scrollIntoView({behavior:"smooth",block:"start"});
-      }
-    },1250);
-  }
-
-  /* Capture phase runs before app.js's own click listener. */
-  btn.addEventListener("click",openCard,true);
-  btn.addEventListener("keydown",function(e){
-    if(e.key==="Enter" || e.key===" "){
-      openCard(e);
-    }
-  },true);
-})();
-</script>
-
-
 <script>
 /* Prevent intro errors from blocking the invitation if a non-critical
    element is unavailable on a very small/mobile layout. */
