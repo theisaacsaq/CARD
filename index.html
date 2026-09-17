@@ -25,12 +25,22 @@
   #preEnvelopeStage{display:grid !important; visibility:visible !important; pointer-events:auto !important;}
   #envelope.start-screen{
     display:flex !important;
-    position:fixed !important; inset:0 !important; z-index:99999 !important;
+    position:fixed !important; inset:0 !important; z-index:1200 !important;
     width:100vw !important; max-width:100vw !important; height:100dvh !important;
     min-height:100svh !important; padding:max(8px,env(safe-area-inset-top)) max(10px,env(safe-area-inset-right)) max(8px,env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left)) !important;
     align-items:center !important; justify-content:center !important;
-    overflow:hidden !important; opacity:1 !important; visibility:visible !important;
-    transform:none !important; pointer-events:auto !important;
+    overflow:hidden !important;
+    pointer-events:none !important;
+  }
+  #envelope.start-screen.cover-visible{
+    opacity:1 !important;
+    visibility:visible !important;
+    pointer-events:auto !important;
+    transform:scale(1) !important;
+  }
+  #envelope.start-screen:not(.cover-visible){
+    opacity:0 !important;
+    visibility:hidden !important;
   }
   #envelope.start-screen .cover-stage-card{
     width:100% !important; max-width:430px !important; max-height:calc(100dvh - 16px) !important;
@@ -779,7 +789,7 @@
        STEP 2 — URDU COVER CARD
        Click this card/button to open the detailed invitation.
   ====================================================== -->
-  <section class="envelope start-screen cover-visible" id="envelope" aria-label="دعوت نامہ کھولیں">
+  <section class="envelope start-screen" id="envelope" aria-label="دعوت نامہ کھولیں">
     <div class="cover-stage-card">
 
       <p class="cover-bismillah-new">
@@ -821,8 +831,7 @@
         <span></span>
       </div>
 
-      <button class="cover-open-new" id="openInvite" type="button"
-        onclick="(function(){var e=document.getElementById('envelope');var m=document.getElementById('mainContent');if(e)e.classList.add('opened');document.body.classList.remove('locked');if(m){m.style.visibility='visible';m.style.opacity='1';m.scrollIntoView({behavior:'smooth',block:'start'});}})()">
+      <button class="cover-open-new" id="openInvite" type="button">
         دعوت نامہ ملاحظہ کیجیے
       </button>
 
