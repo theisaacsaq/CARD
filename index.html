@@ -83,6 +83,116 @@
   #envelope.start-screen .cover-couple-new{font-size:clamp(2rem,11vw,3.3rem) !important;}
   .section{padding-top:50px !important; padding-bottom:50px !important;}
 }
+
+/* =========================================================
+   CARD CLICK OPENING ANIMATION
+   Uses the existing app.js .ribbon-opening state.
+   Nothing in app.js/client-data.js is changed.
+========================================================= */
+.start-screen.ribbon-opening .cover-stage-card{
+  animation: weddingCardOpen 1.25s cubic-bezier(.22,.72,.18,1) forwards;
+  transform-origin:50% 50%;
+  will-change:transform,opacity,filter;
+}
+
+.start-screen.ribbon-opening .cover-seal-new{
+  animation: weddingSealOpen .75s cubic-bezier(.34,1.56,.64,1) .05s forwards;
+}
+
+.start-screen.ribbon-opening .cover-seal-line-new span:first-child{
+  animation: weddingLineLeft .8s ease forwards;
+}
+
+.start-screen.ribbon-opening .cover-seal-line-new span:last-child{
+  animation: weddingLineRight .8s ease forwards;
+}
+
+.start-screen.ribbon-opening .cover-open-new{
+  animation: weddingButtonOpen .55s ease forwards;
+}
+
+@keyframes weddingCardOpen{
+  0%{
+    opacity:1;
+    transform:scale(1) rotateX(0deg);
+    filter:blur(0);
+  }
+  45%{
+    opacity:1;
+    transform:scale(1.018) rotateX(0deg);
+    filter:blur(0);
+  }
+  100%{
+    opacity:0;
+    transform:scale(1.06) rotateX(7deg) translateY(-8px);
+    filter:blur(2px);
+  }
+}
+
+@keyframes weddingSealOpen{
+  0%{
+    opacity:1;
+    transform:scale(1) rotate(0deg);
+  }
+  100%{
+    opacity:0;
+    transform:scale(.15) rotate(220deg);
+  }
+}
+
+@keyframes weddingLineLeft{
+  to{
+    transform:translateX(-70px);
+    opacity:0;
+  }
+}
+
+@keyframes weddingLineRight{
+  to{
+    transform:translateX(70px);
+    opacity:0;
+  }
+}
+
+@keyframes weddingButtonOpen{
+  0%{
+    opacity:1;
+    transform:scale(1);
+  }
+  100%{
+    opacity:0;
+    transform:scale(.94) translateY(4px);
+  }
+}
+
+@media(max-width:600px){
+  .start-screen.ribbon-opening .cover-stage-card{
+    animation-duration:1.25s;
+  }
+
+  .start-screen.ribbon-opening .cover-seal-line-new span:first-child{
+    animation-name:weddingLineLeftMobile;
+  }
+
+  .start-screen.ribbon-opening .cover-seal-line-new span:last-child{
+    animation-name:weddingLineRightMobile;
+  }
+}
+
+@keyframes weddingLineLeftMobile{
+  to{
+    transform:translateX(-45px);
+    opacity:0;
+  }
+}
+
+@keyframes weddingLineRightMobile{
+  to{
+    transform:translateX(45px);
+    opacity:0;
+  }
+}
+
 </style>
 
 
