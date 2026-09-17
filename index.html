@@ -193,6 +193,55 @@
   }
 }
 
+
+/* =========================================================
+   ROBUST CARD OPENING FALLBACK
+   Handles the button directly from index.html so the opening
+   animation still works if app.js is cached/missing on hosting.
+========================================================= */
+.start-screen.card-opening .cover-stage-card{
+  animation: cardOpenMain 1.2s cubic-bezier(.2,.8,.18,1) forwards !important;
+  transform-origin:50% 50%;
+  will-change:transform,opacity,filter;
+}
+.start-screen.card-opening .cover-stage-card::before{
+  animation: cardOpenBorderLeft 1.05s ease-in forwards;
+}
+.start-screen.card-opening .cover-stage-card::after{
+  animation: cardOpenBorderRight 1.05s ease-in forwards;
+}
+.start-screen.card-opening .cover-bismillah-new,
+.start-screen.card-opening .cover-welcome-new,
+.start-screen.card-opening .cover-diamond-line,
+.start-screen.card-opening .cover-couple-new,
+.start-screen.card-opening .cover-guest-new,
+.start-screen.card-opening .cover-poetry-new,
+.start-screen.card-opening .cover-date-new,
+.start-screen.card-opening .cover-invite-new,
+.start-screen.card-opening .cover-seal-line-new,
+.start-screen.card-opening .cover-open-new,
+.start-screen.card-opening .cover-signature-new{
+  animation: cardOpenContent .9s cubic-bezier(.2,.8,.18,1) forwards;
+}
+@keyframes cardOpenMain{
+  0%{opacity:1;transform:perspective(1200px) scale(1) rotateX(0deg);filter:blur(0);}
+  38%{opacity:1;transform:perspective(1200px) scale(1.025) rotateX(0deg);filter:blur(0);}
+  100%{opacity:0;transform:perspective(1200px) scale(1.12) rotateX(9deg) translateY(-14px);filter:blur(3px);}
+}
+@keyframes cardOpenContent{
+  0%{opacity:1;transform:translateY(0) scale(1);}
+  35%{opacity:1;transform:translateY(-2px) scale(1.01);}
+  100%{opacity:0;transform:translateY(-18px) scale(.96);}
+}
+@keyframes cardOpenBorderLeft{
+  0%{opacity:1;transform:translateX(0);}
+  100%{opacity:0;transform:translateX(-55px);}
+}
+@keyframes cardOpenBorderRight{
+  0%{opacity:1;transform:translateX(0);}
+  100%{opacity:0;transform:translateX(55px);}
+}
+
 </style>
 
 
@@ -1389,6 +1438,35 @@
 
   <script src="client-data.js"></script>
 <script src="app.js"></script>
+<script>
+(function(){
+  const btn = document.getElementById("openInvite");
+  const cover = document.getElementById("envelope");
+  const main = document.getElementById("mainContent");
+  if(!btn || !cover) return;
+
+  btn.addEventListener("click", function(e){
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    if(cover.classList.contains("card-opening") || cover.classList.contains("opened")) return;
+
+    btn.disabled = true;
+    cover.classList.add("card-opening");
+
+    if(typeof createRoyalSparks === "function") createRoyalSparks();
+
+    setTimeout(function(){
+      cover.classList.add("opened");
+      document.body.classList.remove("locked");
+      if(main){
+        main.style.visibility = "visible";
+        main.style.opacity = "1";
+        main.scrollIntoView({behavior:"smooth", block:"start"});
+      }
+    }, 1200);
+  }, true);
+})();
+</script>
 
 
 <script>
