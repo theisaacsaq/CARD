@@ -20,6 +20,7 @@ const CLIENT_DATA = window.CLIENT || {
   maxGuests: 6,
   elders: [],
   cousins: [],
+
   barat: {
     enabled: true,
     dateText: "بروز ہفتہ، ۱۲ دسمبر ۲۰۲۶",
@@ -29,6 +30,7 @@ const CLIENT_DATA = window.CLIENT || {
     start: "2026-12-12T19:00:00",
     end: "2026-12-12T22:00:00"
   },
+
   walima: {
     enabled: true,
     dateText: "بروز اتوار، ۱۳ دسمبر ۲۰۲۶",
@@ -38,8 +40,10 @@ const CLIENT_DATA = window.CLIENT || {
     start: "2026-12-13T20:00:00",
     end: "2026-12-13T23:00:00"
   },
+
   countdownTo: "2026-12-12T19:00:00"
 };
+
 
 const CONFIG = {
   bride: CLIENT_DATA.bride,
@@ -58,8 +62,7 @@ const CONFIG = {
    URL PARAMETERS
 ========================================= */
 
-const params =
-  new URLSearchParams(window.location.search);
+const params = new URLSearchParams(window.location.search);
 
 const inviteType =
   params.get("invite") || "both";
@@ -70,7 +73,6 @@ const guest =
 
 const withFamily =
   params.get("family") === "yes";
-
 
 const guestDisplay =
   withFamily
@@ -116,7 +118,7 @@ const setText = (id, value) => {
 
   const el = $(id);
 
-  if(el){
+  if (el) {
     el.textContent = value;
   }
 
@@ -127,11 +129,11 @@ const setText = (id, value) => {
    FAMILY LIST
 ========================================= */
 
-function renderNameList(id, names){
+function renderNameList(id, names) {
 
   const container = $(id);
 
-  if(!container){
+  if (!container) {
     return;
   }
 
@@ -139,7 +141,7 @@ function renderNameList(id, names){
 
   (names || []).forEach(name => {
 
-    if(!name){
+    if (!name) {
       return;
     }
 
@@ -159,13 +161,13 @@ function renderNameList(id, names){
    CALENDAR
 ========================================= */
 
-function calendarUrl(title, event){
+function calendarUrl(title, event) {
 
-  if(
+  if (
     !event ||
     !event.start ||
     !event.end
-  ){
+  ) {
     return "#";
   }
 
@@ -184,7 +186,7 @@ function calendarUrl(title, event){
    APPLY CLIENT DATA
 ========================================= */
 
-function applyContent(){
+function applyContent() {
 
 
   /* BRIDE */
@@ -315,9 +317,7 @@ function applyContent(){
   );
 
 
-  /* =====================================
-     GUEST LIMIT
-  ===================================== */
+  /* GUEST LIMIT */
 
   setText(
     "guestLimit",
@@ -325,19 +325,19 @@ function applyContent(){
   );
 
 
-  /* =====================================
-     GOOGLE MAPS
-  ===================================== */
+  /* GOOGLE MAPS */
 
   const baratMap =
     $("baratMap");
 
-  if(baratMap){
+  if (baratMap) {
 
     baratMap.href =
       `https://www.google.com/maps/search/?api=1&query=` +
       encodeURIComponent(
-        CONFIG.barat.mapQuery || CONFIG.barat.venue || ""
+        CONFIG.barat.mapQuery ||
+        CONFIG.barat.venue ||
+        ""
       );
 
   }
@@ -346,25 +346,25 @@ function applyContent(){
   const walimaMap =
     $("walimaMap");
 
-  if(walimaMap){
+  if (walimaMap) {
 
     walimaMap.href =
       `https://www.google.com/maps/search/?api=1&query=` +
       encodeURIComponent(
-        CONFIG.walima.mapQuery || CONFIG.walima.venue || ""
+        CONFIG.walima.mapQuery ||
+        CONFIG.walima.venue ||
+        ""
       );
 
   }
 
 
-  /* =====================================
-     CALENDAR LINKS
-  ===================================== */
+  /* CALENDAR LINKS */
 
   const baratCalendar =
     $("baratCalendar");
 
-  if(baratCalendar){
+  if (baratCalendar) {
 
     baratCalendar.href =
       calendarUrl(
@@ -378,7 +378,7 @@ function applyContent(){
   const walimaCalendar =
     $("walimaCalendar");
 
-  if(walimaCalendar){
+  if (walimaCalendar) {
 
     walimaCalendar.href =
       calendarUrl(
@@ -389,9 +389,7 @@ function applyContent(){
   }
 
 
-  /* =====================================
-     ELEMENTS
-  ===================================== */
+  /* ELEMENTS */
 
   const baratCard =
     $("baratCard");
@@ -412,64 +410,41 @@ function applyContent(){
     $("fullRsvpActions");
 
 
-  /* =====================================
-     OPTIONAL ENABLE / DISABLE
-  ===================================== */
+  /* OPTIONAL ENABLE / DISABLE */
 
-  if(
+  if (
     CONFIG.barat.enabled === false &&
     baratCard
-  ){
-
-    baratCard.classList.add(
-      "hidden"
-    );
-
+  ) {
+    baratCard.classList.add("hidden");
   }
 
 
-  if(
+  if (
     CONFIG.walima.enabled === false &&
     walimaCard
-  ){
-
-    walimaCard.classList.add(
-      "hidden"
-    );
-
+  ) {
+    walimaCard.classList.add("hidden");
   }
 
 
-  /* =====================================
-     WALIMA ONLY
-  ===================================== */
+  /* WALIMA ONLY */
 
-  if(inviteType === "walima"){
+  if (inviteType === "walima") {
 
-    if(baratCard){
-
-      baratCard.classList.add(
-        "hidden"
-      );
-
+    if (baratCard) {
+      baratCard.classList.add("hidden");
     }
 
-
-    if(baratAttendance){
-
-      baratAttendance.classList.add(
-        "hidden"
-      );
-
+    if (baratAttendance) {
+      baratAttendance.classList.add("hidden");
     }
-
 
     setText(
       "rsvpHeading",
       "ولیمہ میں شرکت"
     );
 
-
     setText(
       "rsvpIntro",
       "براہِ کرم اپنی شرکت کی تصدیق فرمائیے۔"
@@ -478,27 +453,19 @@ function applyContent(){
   }
 
 
-  /* =====================================
-     BARAT ONLY
-  ===================================== */
+  /* BARAT ONLY */
 
-  if(inviteType === "barat"){
+  if (inviteType === "barat") {
 
-    if(walimaCard){
-
-      walimaCard.classList.add(
-        "hidden"
-      );
-
+    if (walimaCard) {
+      walimaCard.classList.add("hidden");
     }
-
 
     setText(
       "rsvpHeading",
       "تقریبِ بارات میں شرکت"
     );
 
-
     setText(
       "rsvpIntro",
       "براہِ کرم اپنی شرکت کی تصدیق فرمائیے۔"
@@ -507,83 +474,38 @@ function applyContent(){
   }
 
 
-  /* =====================================
-     BARAT + WALIMA
-  ===================================== */
+  /* BARAT + WALIMA */
 
-  if(inviteType === "both"){
+  if (inviteType === "both") {
 
-    /* Simple RSVP hide */
-
-    if(simpleRsvp){
-
-      simpleRsvp.classList.add(
-        "hidden"
-      );
-
+    if (simpleRsvp) {
+      simpleRsvp.classList.add("hidden");
     }
 
-
-    /* Counter show */
-
-    if(attendanceSection){
-
-      attendanceSection.classList.remove(
-        "hidden"
-      );
-
+    if (attendanceSection) {
+      attendanceSection.classList.remove("hidden");
     }
 
-
-    /* Main WhatsApp buttons show */
-
-    if(fullRsvpActions){
-
-      fullRsvpActions.classList.remove(
-        "hidden"
-      );
-
+    if (fullRsvpActions) {
+      fullRsvpActions.classList.remove("hidden");
     }
 
   }
 
+  /* SINGLE EVENT */
 
-  /* =====================================
-     SINGLE EVENT
-  ===================================== */
+  else {
 
-  else{
-
-    /* Simple RSVP show */
-
-    if(simpleRsvp){
-
-      simpleRsvp.classList.remove(
-        "hidden"
-      );
-
+    if (simpleRsvp) {
+      simpleRsvp.classList.remove("hidden");
     }
 
-
-    /* Counter hide */
-
-    if(attendanceSection){
-
-      attendanceSection.classList.add(
-        "hidden"
-      );
-
+    if (attendanceSection) {
+      attendanceSection.classList.add("hidden");
     }
 
-
-    /* Duplicate old WhatsApp buttons hide */
-
-    if(fullRsvpActions){
-
-      fullRsvpActions.classList.add(
-        "hidden"
-      );
-
+    if (fullRsvpActions) {
+      fullRsvpActions.classList.add("hidden");
     }
 
   }
@@ -598,15 +520,14 @@ function applyContent(){
    PETALS
 ========================================= */
 
-function createPetals(){
+function createPetals() {
 
   const layer =
     $("petalLayer");
 
-  if(!layer){
+  if (!layer) {
     return;
   }
-
 
   const count =
     window.innerWidth < 600
@@ -614,51 +535,42 @@ function createPetals(){
       : 20;
 
 
-  for(
+  for (
     let i = 0;
     i < count;
     i++
-  ){
+  ) {
 
     const petal =
       document.createElement("i");
 
-
     petal.className =
       "petal";
 
-
     petal.style.left =
       `${Math.random() * 100}%`;
-
 
     petal.style.setProperty(
       "--size",
       `${8 + Math.random() * 10}px`
     );
 
-
     petal.style.setProperty(
       "--opacity",
       `${0.28 + Math.random() * 0.48}`
     );
-
 
     petal.style.setProperty(
       "--duration",
       `${10 + Math.random() * 11}s`
     );
 
-
     petal.style.setProperty(
       "--delay",
       `${-Math.random() * 18}s`
     );
 
-
-    layer.appendChild(
-      petal
-    );
+    layer.appendChild(petal);
 
   }
 
@@ -669,7 +581,7 @@ function createPetals(){
    COUNTER
 ========================================= */
 
-function total(){
+function total() {
 
   return (
     counts.ladies +
@@ -680,7 +592,7 @@ function total(){
 }
 
 
-function updateCounters(){
+function updateCounters() {
 
   Object.keys(counts)
     .forEach(key => {
@@ -691,7 +603,6 @@ function updateCounters(){
       );
 
     });
-
 
   updateLinks();
 
@@ -717,31 +628,27 @@ document
           button.dataset.action;
 
 
-        if(
+        if (
           !Object.prototype
             .hasOwnProperty
             .call(
               counts,
               type
             )
-        ){
-
+        ) {
           return;
-
         }
 
 
         /* PLUS */
 
-        if(action === "plus"){
+        if (action === "plus") {
 
-          if(
+          if (
             total() <
             maxGuests
-          ){
-
+          ) {
             counts[type]++;
-
           }
 
         }
@@ -749,15 +656,12 @@ document
 
         /* MINUS */
 
-        if(action === "minus"){
+        if (action === "minus") {
 
-          if(
-            counts[type] >
-            0
-          ){
-
+          if (
+            counts[type] > 0
+          ) {
             counts[type]--;
-
           }
 
         }
@@ -775,20 +679,17 @@ document
    WHATSAPP LINKS
 ========================================= */
 
-function updateLinks(){
+function updateLinks() {
 
   const selectedTotal =
     total();
 
-
   let acceptMessage;
 
 
-  /* =====================================
-     BOTH
-  ===================================== */
+  /* BOTH */
 
-  if(inviteType === "both"){
+  if (inviteType === "both") {
 
     acceptMessage =
 `السلام علیکم،
@@ -811,11 +712,9 @@ ${guestDisplay} ان شاء اللہ ${CONFIG.bride} اور ${CONFIG.groom} کی
   }
 
 
-  /* =====================================
-     WALIMA ONLY
-  ===================================== */
+  /* WALIMA ONLY */
 
-  else if(inviteType === "walima"){
+  else if (inviteType === "walima") {
 
     acceptMessage =
 `السلام علیکم،
@@ -827,11 +726,9 @@ ${guestDisplay} ان شاء اللہ ${CONFIG.bride} اور ${CONFIG.groom} کی
   }
 
 
-  /* =====================================
-     BARAT ONLY
-  ===================================== */
+  /* BARAT ONLY */
 
-  else{
+  else {
 
     acceptMessage =
 `السلام علیکم،
@@ -843,9 +740,7 @@ ${guestDisplay} ان شاء اللہ ${CONFIG.bride} اور ${CONFIG.groom} کی
   }
 
 
-  /* =====================================
-     REGRET MESSAGE
-  ===================================== */
+  /* REGRET MESSAGE */
 
   const regretMessage =
 `السلام علیکم،
@@ -855,9 +750,7 @@ ${guestDisplay} معذرت کے ساتھ تقریب میں شرکت نہیں ک�
 ہماری دعائیں ${CONFIG.bride} اور ${CONFIG.groom} کے ساتھ ہیں۔`;
 
 
-  /* =====================================
-     MAIN RSVP BUTTONS
-  ===================================== */
+  /* MAIN RSVP BUTTONS */
 
   const acceptBtn =
     $("acceptBtn");
@@ -866,7 +759,7 @@ ${guestDisplay} معذرت کے ساتھ تقریب میں شرکت نہیں ک�
     $("regretBtn");
 
 
-  if(acceptBtn){
+  if (acceptBtn) {
 
     acceptBtn.href =
       `https://wa.me/${CONFIG.whatsapp}?text=` +
@@ -877,7 +770,7 @@ ${guestDisplay} معذرت کے ساتھ تقریب میں شرکت نہیں ک�
   }
 
 
-  if(regretBtn){
+  if (regretBtn) {
 
     regretBtn.href =
       `https://wa.me/${CONFIG.whatsapp}?text=` +
@@ -888,9 +781,7 @@ ${guestDisplay} معذرت کے ساتھ تقریب میں شرکت نہیں ک�
   }
 
 
-  /* =====================================
-     SIMPLE RSVP
-  ===================================== */
+  /* SIMPLE RSVP */
 
   const simpleAcceptBtn =
     $("simpleAcceptBtn");
@@ -902,12 +793,12 @@ ${guestDisplay} معذرت کے ساتھ تقریب میں شرکت نہیں ک�
   let eventName;
 
 
-  if(inviteType === "walima"){
+  if (inviteType === "walima") {
 
     eventName =
       "دعوتِ ولیمہ";
 
-  }else{
+  } else {
 
     eventName =
       "تقریبِ بارات";
@@ -931,7 +822,7 @@ ${guestDisplay} معذرت کے ساتھ ${eventName} میں شرکت نہیں �
 دعاؤں کے ساتھ۔`;
 
 
-  if(simpleAcceptBtn){
+  if (simpleAcceptBtn) {
 
     simpleAcceptBtn.href =
       `https://wa.me/${CONFIG.whatsapp}?text=` +
@@ -942,7 +833,7 @@ ${guestDisplay} معذرت کے ساتھ ${eventName} میں شرکت نہیں �
   }
 
 
-  if(simpleRegretBtn){
+  if (simpleRegretBtn) {
 
     simpleRegretBtn.href =
       `https://wa.me/${CONFIG.whatsapp}?text=` +
@@ -956,159 +847,57 @@ ${guestDisplay} معذرت کے ساتھ ${eventName} میں شرکت نہیں �
 
 
 /* =========================================
-   MUSIC
+   BACKGROUND MP3 MUSIC
 ========================================= */
 
-let audioCtx;
-let master;
-let musicTimer;
+/*
+   background.mp3 MUST be in the same folder
+   as app.js and index.html.
+*/
+
+const backgroundMusic =
+  new Audio("./background.mp3");
+
+backgroundMusic.loop = true;
+backgroundMusic.volume = 0.45;
+backgroundMusic.preload = "auto";
+
 let muted = false;
-
-
-function playTone(
-  freq,
-  when,
-  duration,
-  volume
-){
-
-  const osc =
-    audioCtx.createOscillator();
-
-  const gain =
-    audioCtx.createGain();
-
-
-  osc.type =
-    "sine";
-
-  osc.frequency.value =
-    freq;
-
-
-  gain.gain.setValueAtTime(
-    0,
-    when
-  );
-
-
-  gain.gain.linearRampToValueAtTime(
-    volume,
-    when + 0.7
-  );
-
-
-  gain.gain.exponentialRampToValueAtTime(
-    0.0001,
-    when + duration
-  );
-
-
-  osc
-    .connect(gain)
-    .connect(master);
-
-
-  osc.start(
-    when
-  );
-
-
-  osc.stop(
-    when + duration
-  );
-
-}
-
-
-/* =========================================
-   MUSIC PHRASE
-========================================= */
-
-function musicPhrase(){
-
-  if(!audioCtx){
-    return;
-  }
-
-
-  const now =
-    audioCtx.currentTime;
-
-
-  [
-    261.63,
-    329.63,
-    392,
-    493.88
-  ].forEach(
-    (freq, index) => {
-
-      playTone(
-        freq,
-        now + index * 1.8,
-        5,
-        0.035
-      );
-
-    }
-  );
-
-}
 
 
 /* =========================================
    START MUSIC
 ========================================= */
 
-function startMusic(){
+function startMusic() {
 
-  try{
+  /*
+     Music is started after the user presses
+     the invitation button. This avoids
+     browser autoplay restrictions.
+  */
 
-    audioCtx =
-      new (
-        window.AudioContext ||
-        window.webkitAudioContext
-      )();
-
-
-    master =
-      audioCtx.createGain();
-
-
-    master.gain.value =
-      0.8;
-
-
-    master.connect(
-      audioCtx.destination
-    );
-
-
-    musicPhrase();
-
-
-    musicTimer =
-      setInterval(
-        musicPhrase,
-        7200
-      );
-
-  }catch(error){
-
-    const toggle =
-      $("musicToggle");
-
-
-    if(toggle){
-
-      toggle.classList.add(
-        "hidden"
-      );
-
-    }
-
+  if (!backgroundMusic.paused) {
+    return;
   }
+
+  backgroundMusic
+    .play()
+    .then(() => {
+
+      console.log(
+        "Background music started."
+      );
+
+    })
+    .catch(error => {
+
+      console.log(
+        "Background music could not start:",
+        error
+      );
+
+    });
 
 }
 
@@ -1121,28 +910,29 @@ const musicToggle =
   $("musicToggle");
 
 
-if(musicToggle){
+if (musicToggle) {
 
   musicToggle.addEventListener(
     "click",
     () => {
 
-      if(!audioCtx){
-        return;
+      /*
+         If somehow the music has not started,
+         clicking the music button will also
+         try to start it.
+      */
+
+      if (backgroundMusic.paused) {
+
+        startMusic();
+
       }
 
 
-      muted =
-        !muted;
+      muted = !muted;
 
-
-      master.gain.setTargetAtTime(
-        muted
-          ? 0
-          : 0.8,
-        audioCtx.currentTime,
-        0.15
-      );
+      backgroundMusic.muted =
+        muted;
 
 
       musicToggle.classList.toggle(
@@ -1180,9 +970,9 @@ const sparkBurst =
    GOLD SPARK BURST
 ========================================= */
 
-function createRoyalSparks(){
+function createRoyalSparks() {
 
-  if(!sparkBurst){
+  if (!sparkBurst) {
     return;
   }
 
@@ -1191,11 +981,11 @@ function createRoyalSparks(){
     "";
 
 
-  for(
+  for (
     let i = 0;
     i < 32;
     i++
-  ){
+  ) {
 
     const spark =
       document.createElement(
@@ -1265,10 +1055,10 @@ function createRoyalSparks(){
    OPEN INVITATION
 ========================================= */
 
-if(
+if (
   openInvite &&
   envelope
-){
+) {
 
   openInvite.addEventListener(
     "click",
@@ -1278,21 +1068,25 @@ if(
         true;
 
 
+      /*
+         IMPORTANT:
+         Start MP3 immediately inside the
+         user's click event.
+
+         This is the most reliable way to
+         satisfy Chrome/Safari/mobile
+         autoplay restrictions.
+      */
+
+      startMusic();
+
+
       envelope.classList.add(
         "ribbon-opening"
       );
 
 
       createRoyalSparks();
-
-
-      /* Start music after user interaction */
-
-      if(!audioCtx){
-
-        startMusic();
-
-      }
 
 
       setTimeout(
@@ -1317,7 +1111,7 @@ if(
                 $("mainContent");
 
 
-              if(mainContent){
+              if (mainContent) {
 
                 mainContent.scrollIntoView({
                   behavior: "smooth"
@@ -1343,7 +1137,7 @@ if(
    COUNTDOWN
 ========================================= */
 
-function tick(){
+function tick() {
 
   const target =
     new Date(
@@ -1384,32 +1178,52 @@ function tick(){
   ];
 
 
-  const renderCountdown = (element, labels) => {
+  const renderCountdown =
+    (element, labels) => {
 
-    if(!element){
-      return;
-    }
+      if (!element) {
+        return;
+      }
 
-    let rest = diff;
+      let rest = diff;
 
-    element.innerHTML = units
-      .map(([urduLabel, ms], index) => {
 
-        const number = Math.floor(rest / ms);
-        rest %= ms;
+      element.innerHTML = units
+        .map(([urduLabel, ms], index) => {
 
-        return `
-          <div class="time-box">
-            <strong>${String(number).padStart(2, "0")}</strong>
-            <span>${labels ? labels[index] : urduLabel}</span>
-          </div>
-        `;
-      })
-      .join("");
-  };
+          const number =
+            Math.floor(rest / ms);
 
-  renderCountdown($("countdown"));
-  renderCountdown($("startCountdown"), ["DAYS", "HOURS", "MINUTES", "SECONDS"]);
+          rest %= ms;
+
+
+          return `
+            <div class="time-box">
+              <strong>${String(number).padStart(2, "0")}</strong>
+              <span>${labels ? labels[index] : urduLabel}</span>
+            </div>
+          `;
+
+        })
+        .join("");
+
+    };
+
+
+  renderCountdown(
+    $("countdown")
+  );
+
+
+  renderCountdown(
+    $("startCountdown"),
+    [
+      "DAYS",
+      "HOURS",
+      "MINUTES",
+      "SECONDS"
+    ]
+  );
 
 }
 
@@ -1425,9 +1239,9 @@ const observer =
       entries.forEach(
         entry => {
 
-          if(
+          if (
             entry.isIntersecting
-          ){
+          ) {
 
             entry.target
               .classList
