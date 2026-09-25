@@ -852,7 +852,7 @@ ${guestDisplay} معذرت کے ساتھ ${eventName} میں شرکت نہیں �
 
 const musicTracks = [
   "./background.mp3",
-  "./background2.mp3"
+  "./background1.mp3"
 ];
 
 let currentTrack = 0;
