@@ -847,22 +847,38 @@ ${guestDisplay} معذرت کے ساتھ ${eventName} میں شرکت نہیں �
 
 
 /* =========================================
-   BACKGROUND MP3 MUSIC
+   BACKGROUND MUSIC PLAYLIST
 ========================================= */
 
-/*
-   background.mp3 MUST be in the same folder
-   as app.js and index.html.
-*/
+const musicTracks = [
+  "./background.mp3",
+  "./background2.mp3"
+];
 
-const backgroundMusic =
-  new Audio("./background.mp3");
+let currentTrack = 0;
+let muted = false;
 
-backgroundMusic.loop = true;
+const backgroundMusic = new Audio(musicTracks[currentTrack]);
+
 backgroundMusic.volume = 0.45;
 backgroundMusic.preload = "auto";
 
-let muted = false;
+/* Play next song automatically */
+backgroundMusic.addEventListener("ended", () => {
+  currentTrack++;
+
+  // After second song, go back to first
+  if (currentTrack >= musicTracks.length) {
+    currentTrack = 0;
+  }
+
+  backgroundMusic.src = musicTracks[currentTrack];
+  backgroundMusic.load();
+
+  backgroundMusic.play().catch(error => {
+    console.log("Next music track could not start:", error);
+  });
+});
 
 
 /* =========================================
@@ -871,12 +887,6 @@ let muted = false;
 
 function startMusic() {
 
-  /*
-     Music is started after the user presses
-     the invitation button. This avoids
-     browser autoplay restrictions.
-  */
-
   if (!backgroundMusic.paused) {
     return;
   }
@@ -884,21 +894,14 @@ function startMusic() {
   backgroundMusic
     .play()
     .then(() => {
-
-      console.log(
-        "Background music started."
-      );
-
+      console.log("Background music started.");
     })
     .catch(error => {
-
       console.log(
         "Background music could not start:",
         error
       );
-
     });
-
 }
 
 
@@ -906,52 +909,30 @@ function startMusic() {
    MUSIC BUTTON
 ========================================= */
 
-const musicToggle =
-  $("musicToggle");
-
+const musicToggle = $("musicToggle");
 
 if (musicToggle) {
 
-  musicToggle.addEventListener(
-    "click",
-    () => {
+  musicToggle.addEventListener("click", () => {
 
-      /*
-         If somehow the music has not started,
-         clicking the music button will also
-         try to start it.
-      */
-
-      if (backgroundMusic.paused) {
-
-        startMusic();
-
-      }
-
-
-      muted = !muted;
-
-      backgroundMusic.muted =
-        muted;
-
-
-      musicToggle.classList.toggle(
-        "muted",
-        muted
-      );
-
-
-      musicToggle.textContent =
-        muted
-          ? "♩"
-          : "♫";
-
+    if (backgroundMusic.paused) {
+      startMusic();
     }
-  );
+
+    muted = !muted;
+
+    backgroundMusic.muted = muted;
+
+    musicToggle.classList.toggle(
+      "muted",
+      muted
+    );
+
+    musicToggle.textContent =
+      muted ? "♩" : "♫";
+  });
 
 }
-
-
 /* =========================================
    OPENING ANIMATION
 ========================================= */
