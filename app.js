@@ -1273,3 +1273,79 @@ setInterval(
   tick,
   1000
 );
+
+
+
+
+
+
+/* =========================================
+   BASIC SOURCE / DEVTOOLS DETERRENTS
+========================================= */
+
+// Disable right click
+document.addEventListener("contextmenu", function (e) {
+  e.preventDefault();
+});
+
+// Block common DevTools / source shortcuts
+document.addEventListener("keydown", function (e) {
+
+  // F12
+  if (e.key === "F12") {
+    e.preventDefault();
+    return false;
+  }
+
+  // Ctrl + Shift + I  -> Inspect
+  if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "i") {
+    e.preventDefault();
+    return false;
+  }
+
+  // Ctrl + Shift + J -> Console
+  if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "j") {
+    e.preventDefault();
+    return false;
+  }
+
+  // Ctrl + Shift + C -> Element picker
+  if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "c") {
+    e.preventDefault();
+    return false;
+  }
+
+  // Ctrl + U -> View Source
+  if (e.ctrlKey && e.key.toLowerCase() === "u") {
+    e.preventDefault();
+    return false;
+  }
+
+});
+
+
+document.addEventListener("contextmenu", e => {
+  e.preventDefault();
+});
+
+document.addEventListener("keydown", e => {
+
+  const key = e.key.toLowerCase();
+
+  if (
+    e.key === "F12" ||
+
+    // Windows/Linux
+    (e.ctrlKey && e.shiftKey && ["i", "j", "c"].includes(key)) ||
+    (e.ctrlKey && key === "u") ||
+
+    // macOS
+    (e.metaKey && e.altKey && ["i", "j", "c"].includes(key)) ||
+    (e.metaKey && key === "u")
+  ) {
+    e.preventDefault();
+    e.stopPropagation();
+    return false;
+  }
+
+});
