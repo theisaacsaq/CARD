@@ -2801,6 +2801,10 @@ html, body{
 
   .pre-envelope-kicker{
     margin-bottom:8px;
+    font-size:24px !important;
+    font-family:"Noto Nastaliq Urdu",serif;
+    letter-spacing:0 !important;
+    line-height:2.2;
   }
 
   .pre-envelope-hint{
